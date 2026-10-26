@@ -1,0 +1,8 @@
+# signing key for the overlay APK: private, never commit
+*.jks
+*.keystore
+# build output
+overlay-systemui/out/
+*.apk
+*.zip
+.DS_Store

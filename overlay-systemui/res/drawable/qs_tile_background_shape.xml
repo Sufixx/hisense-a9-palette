@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Quick-settings tile shape with a black outline for e-ink. SystemUI recolours this drawable at
+     runtime (active/inactive fill); tintMode multiply keeps the black stroke black whatever the fill. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    android:tintMode="multiply">
+    <corners android:radius="28dp" />
+    <solid android:color="#ffffffff" />
+    <stroke android:width="2dp" android:color="#ff000000" />
+</shape>
