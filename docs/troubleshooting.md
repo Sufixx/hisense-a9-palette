@@ -15,6 +15,13 @@ keeper runs and its last log lines, the outline overlay state and the theme styl
 - **Dark mode is on** (Settings → Display → Dark theme, or an app forcing it): only light-mode
   colours are replaced.
 
+## Magisk module: nothing changed after the reboot
+
+The palette switches on about 20 s after the boot finishes, at the first boot only (marker
+`/data/adb/modules/eink_palette/.activated`). Later boots respect the Action button's off state.
+Check `logcat -d -s eink-palette` for "module: palette switched on (first boot)". If the module was
+switched off with Action, press Action again.
+
 ## Screen keeps flashing / shade and launcher unresponsive
 
 That is the overlay loop described in [how-it-works.md](how-it-works.md#why-a-keeper-is-needed).
@@ -22,8 +29,8 @@ The current keeper has a guard against it. If it happens anyway:
 
 ```sh
 adb shell su -c 'logcat -d -s eink-palette | tail'          # confirm: many "moved ... back on top"
-adb shell su -c 'mv /data/adb/service.d/eink-palette.sh /data/adb/eink-palette.sh.off'
-adb reboot
+adb shell su -c 'touch /data/adb/modules/eink_palette/disable' && adb reboot   # Magisk module
+adb shell su -c 'mv /data/adb/service.d/eink-palette.sh /data/adb/eink-palette.sh.off' && adb reboot   # computer-based
 ```
 
 Do not stop it with `pkill -f eink-palette` inside `su -c '…'`: `-f` also matches that shell's own
@@ -33,11 +40,13 @@ command line and kills it first. Find the PID with `ps -A -o pid,args | grep ino
 
 ```sh
 adb shell su -c 'cmd overlay disable io.github.sufixx.eink.systemui'      # immediate
-adb shell su -c 'touch /data/adb/modules/eink_systemui_overlay/disable' && adb reboot   # persistent
+adb shell su -c 'touch /data/adb/modules/eink_palette/disable' && adb reboot           # persistent, Magisk module
+adb shell su -c 'touch /data/adb/modules/eink_systemui_overlay/disable' && adb reboot  # persistent, outline-only module
 ```
 
-Without adb: boot Magisk safe mode (hold volume down during boot on most devices), which disables
-all modules.
+Last resort over adb: `adb shell magisk --remove-modules` (removes **all** modules and reboots).
+Without adb: boot Android safe mode, in which Magisk disables all modules (untested on the A9), or
+delete the module directory from a recovery that can access `/data`.
 
 ## Outline overlay is installed but not listed / not enabled
 

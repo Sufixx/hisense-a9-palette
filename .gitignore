@@ -3,6 +3,7 @@
 *.keystore
 # build output
 overlay-systemui/out/
+magisk-module/out/
 *.apk
 *.zip
 .DS_Store

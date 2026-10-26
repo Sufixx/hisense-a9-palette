@@ -1,6 +1,6 @@
 id=eink_systemui_overlay
 name=E-ink SystemUI overlay
-version=1
-versionCode=1
+version=v1.0
+versionCode=100
 author=sufixx
 description=Black outlines on quick-settings tiles for e-ink (Hisense A9, LineageOS 21). Source: github.com/Sufixx/hisense-a9-palette

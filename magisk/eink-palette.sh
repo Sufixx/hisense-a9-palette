@@ -1,11 +1,12 @@
 #!/system/bin/sh
-# Magisk service.d script ("keeper"), installed as /data/adb/service.d/eink-palette.sh by scripts/install.sh.
+# The "keeper". Installed either as /data/adb/service.d/eink-palette.sh (scripts/install.sh) or
+# inside the all-in-one Magisk module (magisk-module/, started by its service.sh).
 # SystemUI re-registers its monet overlays (com.android.systemui:neutral/accent/dynamic) at boot,
 # when it restarts and on dark/light switches; that puts them above our fabricated overlay
 # com.android.shell:eink and the tinted palette comes back. Re-fabricating ours moves it back on top.
 # Event driven: busybox inotifyd re-runs this script with "<event> <dir> <file>" whenever
 # /data/system/overlays.xml is rewritten, so nothing polls while the phone sleeps.
-SELF=/data/adb/service.d/eink-palette.sh
+SELF=$(readlink -f "$0")  # inotifyd re-runs this same file
 XML=/data/system/eink.xml
 
 STAMPS=/dev/eink-palette.stamps  # tmpfs, cleared at boot

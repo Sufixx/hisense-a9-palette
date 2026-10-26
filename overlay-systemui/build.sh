@@ -47,5 +47,6 @@ else
 fi
 
 cp module.prop out/module/
+cp -R ../magisk-module/META-INF out/module/  # standard Magisk installer stub
 (cd out/module && zip -qr ../eink_systemui_overlay.zip .)
 echo "built out/eink_systemui_overlay.zip"

@@ -15,6 +15,10 @@ keep_style=0
 
 adb get-state >/dev/null
 adb shell "su -c true" || { echo "root via Magisk su is required (allow Shell in Magisk > Superuser)" >&2; exit 1; }
+# the Magisk module (magisk-module/) does the same job; two keepers would fight over the overlay order
+if adb shell "su -c 'ls /data/adb/modules/eink_palette/module.prop'" >/dev/null 2>&1; then
+  echo "the eink_palette Magisk module is installed: use its Action button, or remove it first" >&2; exit 1
+fi
 
 tmp=$(mktemp -t eink).xml
 python3 -I palette/eink_palette.py > "$tmp"

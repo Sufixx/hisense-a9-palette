@@ -123,6 +123,24 @@ must be signed, but any key is accepted for a preinstalled overlay. It is `isSta
 it can be toggled with `cmd overlay enable|disable io.github.sufixx.eink.systemui`. A non-static
 overlay starts disabled; it is enabled once after the first boot, and that state persists.
 
+## The all-in-one Magisk module
+
+`magisk-module/` packs the palette XML (generated at build time, the phone has no Python), the
+keeper and the outline APK into one module:
+
+- `customize.sh` (install time) only touches files: it makes the keeper executable, removes the
+  computer-based keeper from `service.d` and marks the outline-only module for removal, so two
+  keepers never fight over the order.
+- `service.sh` (every boot) copies the XML to `/data/system`, and at the first boot (no
+  `.activated` marker) saves the theme setting, sets `MONOCHROMATIC`, fabricates and enables the
+  palette and the outline overlay. Then it `exec`s the keeper. The keeper ignores a disabled
+  palette, which is what makes the Action button's "off" survive reboots.
+- `action.sh` toggles on/off through the same functions (`common.sh`).
+- `uninstall.sh` runs when Magisk deletes a module marked for removal, early in boot (post-fs-data)
+  when `cmd` and `settings` do not work yet. It writes a one-shot `service.d` script that waits for
+  the boot to finish, disables the palette, restores the saved theme, deletes the XML and itself.
+  Magisk runs `service.d` later in the same boot.
+
 ## Reading .frro files
 
 ```python

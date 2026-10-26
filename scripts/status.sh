@@ -8,9 +8,12 @@ adb shell "su -c '
   for c in system_neutral1_50 system_surface_light system_on_surface_light system_primary_light; do
     printf \"  %-28s %s\n\" \$c \$(cmd overlay lookup com.android.systemui android:color/\$c)
   done
+  echo \"== install method\"
+  [ -f /data/adb/service.d/eink-palette.sh ] && echo \"  computer-based: /data/adb/service.d/eink-palette.sh\"
+  [ -d /data/adb/modules/eink_palette ] && echo \"  Magisk module eink_palette \$(ls /data/adb/modules/eink_palette | grep -E \"^(disable|remove)\$\")\"
+  [ -d /data/adb/modules/eink_systemui_overlay ] && echo \"  outline-only module eink_systemui_overlay\"
   echo \"== keeper\"
-  ls -l /data/adb/service.d/eink-palette.sh 2>/dev/null || echo \"  not installed\"
-  ps -A -o pid,args | grep \"busybox inotifyd /data/adb/service.d/eink-palette.sh\" | grep -v grep || echo \"  not running\"
+  ps -A -o pid,args | grep \"busybox inotifyd .*eink-palette.sh\" | grep -v grep || echo \"  not running\"
   logcat -d -s eink-palette | tail -5
   echo \"== SystemUI outline overlay\"
   cmd overlay list com.android.systemui | grep io.github.sufixx.eink.systemui || echo \"  not installed\"

@@ -1,0 +1,6 @@
+id=eink_palette
+name=E-ink palette (Hisense A9)
+version=v1.0
+versionCode=100
+author=sufixx
+description=Pure white/black system colours and outlined quick-settings tiles for e-ink. Action button: off/on. Tested on Hisense A9, LineageOS 21. github.com/Sufixx/hisense-a9-palette
