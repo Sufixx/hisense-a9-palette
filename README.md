@@ -14,7 +14,9 @@ boot script, and can be switched off with one command.
 ## Before / after
 
 Same screens, before and after. Screenshots are captured *before* the display's grayscale filter,
-so on the device the "before" tints show up as light grey rather than pink.
+so on the device the "before" tints show up as light grey rather than pink. "Before" is damianmqr's
+default theme (style SPRITZ, grey preset); both sides also have the system's bold text and
+high-contrast text settings on, which are not part of this repo.
 
 | | |
 |---|---|
